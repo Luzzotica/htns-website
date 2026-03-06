@@ -20,7 +20,7 @@ export function Footer() {
             </Link>
           </div>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            Copyright © 2025 How To Not Suck. All rights reserved.
+            Copyright © 2026 How To Not Suck. All rights reserved.
           </p>
         </div>
       </div>
