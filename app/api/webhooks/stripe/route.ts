@@ -61,7 +61,11 @@ export async function POST(request: Request) {
         phone,
       });
     } catch (e) {
-      console.error("[stripe webhook] GHL upsert failed:", e);
+      console.error(
+        "[stripe webhook] GHL upsert failed:",
+        { sessionId: session.id },
+        e,
+      );
       return NextResponse.json({ error: "GHL upsert failed" }, { status: 500 });
     }
   }
