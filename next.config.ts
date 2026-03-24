@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const appDir = path.dirname(fileURLToPath(import.meta.url));
+const monorepoRoot = path.join(appDir, "..");
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  turbopack: {
+    root: monorepoRoot,
+  },
 };
 
 export default nextConfig;

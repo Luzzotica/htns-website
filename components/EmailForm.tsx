@@ -1,8 +1,8 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { emailSchema, type EmailFormData } from "@/lib/validations";
 
 interface EmailFormProps {
