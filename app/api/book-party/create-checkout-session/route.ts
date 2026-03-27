@@ -1,12 +1,16 @@
-import { getStripePriceIdForBookParty } from "@/lib/book-party-pricing";
+import {
+  getStripePriceId,
+  type BookPartyProduct,
+} from "@/lib/book-party-pricing";
 import { isValidBookPartyReturnPath } from "@/lib/book-party-return-path";
+import { getBoatSeatsRemaining } from "@/lib/ghl";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { z } from "zod";
 
 const bodySchema = z.object({
   returnPath: z.string().min(1),
-  /** Matches `globals.css` dark `--background` so embedded Checkout blends with the page. */
+  product: z.enum(["boat-and-hotel", "hotel-only"]),
   colorScheme: z.enum(["light", "dark"]).optional(),
 });
 
@@ -39,19 +43,33 @@ export async function POST(request: Request) {
   const parsed = bodySchema.safeParse(json);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Invalid body: returnPath required" },
+      { error: "Invalid body: product and returnPath required" },
       { status: 400 },
     );
   }
 
-  const { returnPath, colorScheme = "light" } = parsed.data;
+  const { returnPath, product, colorScheme = "light" } = parsed.data;
   if (!isValidBookPartyReturnPath(returnPath)) {
     return NextResponse.json({ error: "Invalid returnPath" }, { status: 400 });
   }
 
+  if (product === "boat-and-hotel") {
+    try {
+      const seats = await getBoatSeatsRemaining();
+      if (seats <= 0) {
+        return NextResponse.json(
+          { error: "Boat party tickets are sold out" },
+          { status: 409 },
+        );
+      }
+    } catch (e) {
+      console.error("[book-party] seat check:", e);
+    }
+  }
+
   let priceId: string;
   try {
-    priceId = getStripePriceIdForBookParty();
+    priceId = getStripePriceId(product);
   } catch (e) {
     console.error("[book-party] price config:", e);
     return NextResponse.json(
@@ -79,6 +97,7 @@ export async function POST(request: Request) {
       billing_address_collection: "required",
       phone_number_collection: { enabled: true },
       automatic_tax: { enabled: false },
+      metadata: { product },
       ...(colorScheme === "dark"
         ? {
             branding_settings: {

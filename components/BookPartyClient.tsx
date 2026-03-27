@@ -10,108 +10,195 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import type { BookPartyProduct } from "@/lib/book-party-pricing";
+
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
   ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
   : null;
 
 export type BookPartyClientProps = {
-  earlyBirdEndsAtISO: string | null;
+  initialBoatSeats: number | null;
+  boatSeatsTotal: number;
   isEarlyBird: boolean;
-  pricingConfigured: boolean;
 };
 
-function CountdownUnit({ value, label }: { value: number; label: string }) {
+// ── Seat availability ────────────────────────────────────────────────
+
+type SeatsState = {
+  remaining: number | null;
+  loading: boolean;
+};
+
+function useBoatSeats(
+  initial: number | null,
+): SeatsState & { refresh: () => void } {
+  const [state, setState] = useState<SeatsState>({
+    remaining: initial,
+    loading: false,
+  });
+
+  const refresh = useCallback(async () => {
+    setState((s) => ({ ...s, loading: true }));
+    try {
+      const res = await fetch("/api/book-party/seats", {
+        credentials: "same-origin",
+      });
+      if (res.ok) {
+        const data = (await res.json()) as { remaining: number };
+        setState({ remaining: data.remaining, loading: false });
+      } else {
+        setState((s) => ({ ...s, loading: false }));
+      }
+    } catch {
+      setState((s) => ({ ...s, loading: false }));
+    }
+  }, []);
+
+  return { ...state, refresh };
+}
+
+// ── Product includes ─────────────────────────────────────────────────
+
+const BOAT_INCLUDES = [
+  "Private boat cruise (12\u20132 pm)",
+  "On-board lunch",
+  "Book signing & photos with Vince",
+  "Networking before & after",
+  "AC Hotel after-party (2:30\u20134:30 pm)",
+];
+
+const HOTEL_INCLUDES = [
+  "AC Hotel event (2:30\u20134:30 pm)",
+  "Speech by Vince Romney",
+  "Networking with attendees",
+];
+
+// ── Sub-components ───────────────────────────────────────────────────
+
+function SeatsBadge({
+  remaining,
+  total,
+  loading,
+}: {
+  remaining: number | null;
+  total: number;
+  loading: boolean;
+}) {
+  if (remaining === null) return null;
+
+  const pct = remaining / total;
+  const color =
+    remaining <= 0
+      ? "text-red-600 dark:text-red-400"
+      : pct <= 0.15
+        ? "text-amber-600 dark:text-amber-400"
+        : "text-emerald-600 dark:text-emerald-400";
+
   return (
-    <div className="flex flex-col items-center">
-      <span className="text-3xl font-bold tabular-nums text-amber-900 dark:text-amber-100 sm:text-4xl">
-        {String(value).padStart(2, "0")}
-      </span>
-      <span className="mt-1 text-xs uppercase tracking-wide text-amber-700/70 dark:text-amber-300/70">
-        {label}
-      </span>
-    </div>
+    <p
+      className={`mt-2 text-sm font-medium ${color} ${loading ? "opacity-60" : ""}`}
+    >
+      {remaining <= 0
+        ? "Sold out"
+        : `${remaining} of ${total} seats remaining`}
+    </p>
   );
 }
 
-function EarlyBirdBanner({ endsAtISO }: { endsAtISO: string }) {
-  const [remaining, setRemaining] = useState<{
-    d: number;
-    h: number;
-    m: number;
-    s: number;
-  } | null>(null);
-  const [expired, setExpired] = useState(false);
-
-  useEffect(() => {
-    const end = new Date(endsAtISO).getTime();
-    const tick = () => {
-      const ms = Math.max(0, end - Date.now());
-      if (ms <= 0) {
-        setExpired(true);
-        return;
-      }
-      const total = Math.floor(ms / 1000);
-      setRemaining({
-        d: Math.floor(total / 86400),
-        h: Math.floor((total % 86400) / 3600),
-        m: Math.floor((total % 3600) / 60),
-        s: total % 60,
-      });
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [endsAtISO]);
-
-  if (expired) {
+function PriceBadge({
+  earlyBird,
+  regular,
+  isEarlyBird,
+}: {
+  earlyBird: string;
+  regular: string;
+  isEarlyBird: boolean;
+}) {
+  if (isEarlyBird) {
     return (
-      <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-5 text-center dark:border-zinc-800 dark:bg-zinc-900/60">
-        <p className="text-lg font-semibold text-zinc-800 dark:text-zinc-200">
-          Early bird pricing has ended
-        </p>
-        <p className="mt-1 text-zinc-600 dark:text-zinc-400">
-          Tickets are now <span className="font-bold">$200</span>.
-        </p>
+      <div className="flex items-baseline gap-2">
+        <span className="text-2xl font-bold text-amber-700 dark:text-amber-300">
+          {earlyBird}
+        </span>
+        <span className="text-base text-zinc-400 line-through dark:text-zinc-500">
+          {regular}
+        </span>
       </div>
     );
   }
-
-  if (!remaining) return null;
-
   return (
-    <div className="rounded-xl border border-amber-300 bg-amber-50 p-6 text-center dark:border-amber-700 dark:bg-amber-950/40">
-      <p className="text-sm font-semibold uppercase tracking-wide text-amber-800 dark:text-amber-300">
-        Early bird pricing
-      </p>
-      <p className="mt-2 text-zinc-800 dark:text-zinc-200">
-        <span className="text-3xl font-bold text-amber-900 dark:text-amber-100 sm:text-4xl">
-          $150
-        </span>{" "}
-        <span className="text-base text-zinc-500 line-through dark:text-zinc-500">
-          $200
-        </span>
-      </p>
-      <p className="mt-1 text-sm text-amber-800/80 dark:text-amber-300/80">
-        Price increases to $200 when the timer hits zero
-      </p>
-      <div className="mx-auto mt-5 flex max-w-xs justify-center gap-4">
-        <CountdownUnit value={remaining.d} label="days" />
-        <span className="pt-1 text-2xl font-bold text-amber-900/40 dark:text-amber-100/40">
-          :
-        </span>
-        <CountdownUnit value={remaining.h} label="hrs" />
-        <span className="pt-1 text-2xl font-bold text-amber-900/40 dark:text-amber-100/40">
-          :
-        </span>
-        <CountdownUnit value={remaining.m} label="min" />
-        <span className="pt-1 text-2xl font-bold text-amber-900/40 dark:text-amber-100/40">
-          :
-        </span>
-        <CountdownUnit value={remaining.s} label="sec" />
-      </div>
-    </div>
+    <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+      {regular}
+    </span>
   );
 }
+
+function ProductCard({
+  product,
+  label,
+  earlyBirdPrice,
+  regularPrice,
+  isEarlyBird,
+  includes,
+  selected,
+  onSelect,
+  disabled,
+  badge,
+}: {
+  product: BookPartyProduct;
+  label: string;
+  earlyBirdPrice: string;
+  regularPrice: string;
+  isEarlyBird: boolean;
+  includes: string[];
+  selected: boolean;
+  onSelect: (p: BookPartyProduct) => void;
+  disabled: boolean;
+  badge?: React.ReactNode;
+}) {
+  const ring = selected
+    ? "ring-2 ring-blue-500 border-blue-500 dark:ring-blue-400 dark:border-blue-400"
+    : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600";
+
+  return (
+    <button
+      type="button"
+      onClick={() => !disabled && onSelect(product)}
+      disabled={disabled}
+      className={`flex w-full flex-col rounded-xl border p-6 text-left transition-all ${ring} ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+    >
+      <div className="flex items-baseline justify-between gap-2">
+        <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+          {label}
+        </h3>
+        <PriceBadge
+          earlyBird={earlyBirdPrice}
+          regular={regularPrice}
+          isEarlyBird={isEarlyBird}
+        />
+      </div>
+      {badge}
+      <ul className="mt-4 space-y-1.5">
+        {includes.map((item) => (
+          <li
+            key={item}
+            className="flex items-start gap-2 text-sm text-zinc-600 dark:text-zinc-400"
+          >
+            <span className="mt-0.5 text-emerald-500">&#10003;</span>
+            {item}
+          </li>
+        ))}
+      </ul>
+      {selected && (
+        <p className="mt-4 text-center text-sm font-medium text-blue-600 dark:text-blue-400">
+          Selected &mdash; complete checkout below
+        </p>
+      )}
+    </button>
+  );
+}
+
+// ── Post-payment success ─────────────────────────────────────────────
 
 function SuccessAfterPay({ sessionId }: { sessionId: string }) {
   const pathname = usePathname() ?? "/";
@@ -129,7 +216,7 @@ function SuccessAfterPay({ sessionId }: { sessionId: string }) {
         );
         const data = (await res.json()) as {
           ok?: boolean;
-          pricing_tier?: string | null;
+          product?: string | null;
           amount_total?: number | null;
           currency?: string | null;
         };
@@ -147,7 +234,7 @@ function SuccessAfterPay({ sessionId }: { sessionId: string }) {
         }
 
         track("book_party_purchase", {
-          pricing_tier: data.pricing_tier ?? "unknown",
+          product: data.product ?? "unknown",
           amount_cents: data.amount_total ?? 0,
         });
 
@@ -168,7 +255,7 @@ function SuccessAfterPay({ sessionId }: { sessionId: string }) {
   if (status === "checking") {
     return (
       <p className="text-zinc-600 dark:text-zinc-400">
-        Confirming your payment…
+        Confirming your payment&hellip;
       </p>
     );
   }
@@ -194,26 +281,45 @@ function SuccessAfterPay({ sessionId }: { sessionId: string }) {
   return (
     <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-6 text-center dark:border-emerald-900 dark:bg-emerald-950/40">
       <h2 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100">
-        You&apos;re in — thank you!
+        You&apos;re in &mdash; thank you!
       </h2>
       <p className="mt-3 text-emerald-800 dark:text-emerald-200">
-        We&apos;ll follow up with event details. Check your inbox (and spam)
-        for confirmation.
+        We&apos;ll follow up with event details. Check your inbox (and spam) for
+        confirmation.
       </p>
     </div>
   );
 }
 
+// ── Main export ──────────────────────────────────────────────────────
+
 export function BookPartyClient({
-  earlyBirdEndsAtISO,
+  initialBoatSeats,
+  boatSeatsTotal,
   isEarlyBird,
-  pricingConfigured,
 }: BookPartyClientProps) {
   const pathname = usePathname() ?? "/";
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id")?.trim() ?? null;
 
+  const seats = useBoatSeats(initialBoatSeats);
+  const [selectedProduct, setSelectedProduct] =
+    useState<BookPartyProduct | null>(null);
+
+  const boatSoldOut = seats.remaining !== null && seats.remaining <= 0;
+
+  const handleSelect = useCallback(
+    (product: BookPartyProduct) => {
+      if (product === "boat-and-hotel") {
+        seats.refresh();
+      }
+      setSelectedProduct((prev) => (prev === product ? null : product));
+    },
+    [seats],
+  );
+
   const fetchClientSecret = useCallback(async () => {
+    if (!selectedProduct) throw new Error("No product selected");
     const colorScheme = window.matchMedia("(prefers-color-scheme: dark)")
       .matches
       ? "dark"
@@ -221,7 +327,11 @@ export function BookPartyClient({
     const res = await fetch("/api/book-party/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ returnPath: pathname, colorScheme }),
+      body: JSON.stringify({
+        returnPath: pathname,
+        product: selectedProduct,
+        colorScheme,
+      }),
       credentials: "same-origin",
     });
     const data = (await res.json().catch(() => ({}))) as {
@@ -232,7 +342,7 @@ export function BookPartyClient({
       throw new Error(data.error ?? "Could not start checkout");
     }
     return data.clientSecret;
-  }, [pathname]);
+  }, [pathname, selectedProduct]);
 
   const checkoutOptions = useMemo(
     () => ({ fetchClientSecret }),
@@ -252,42 +362,50 @@ export function BookPartyClient({
   }
 
   return (
-    <div className="space-y-6">
-      {pricingConfigured && isEarlyBird && earlyBirdEndsAtISO && (
-        <EarlyBirdBanner endsAtISO={earlyBirdEndsAtISO} />
-      )}
+    <div className="space-y-8">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <ProductCard
+          product="boat-and-hotel"
+          label="Boat Party + Hotel"
+          earlyBirdPrice="$150"
+          regularPrice="$200"
+          isEarlyBird={isEarlyBird}
+          includes={BOAT_INCLUDES}
+          selected={selectedProduct === "boat-and-hotel"}
+          onSelect={handleSelect}
+          disabled={boatSoldOut}
+          badge={
+            <SeatsBadge
+              remaining={seats.remaining}
+              total={boatSeatsTotal}
+              loading={seats.loading}
+            />
+          }
+        />
+        <ProductCard
+          product="hotel-only"
+          label="Hotel Only"
+          earlyBirdPrice="$50"
+          regularPrice="$75"
+          isEarlyBird={isEarlyBird}
+          includes={HOTEL_INCLUDES}
+          selected={selectedProduct === "hotel-only"}
+          onSelect={handleSelect}
+          disabled={false}
+        />
+      </div>
 
-      {pricingConfigured && !isEarlyBird && (
-        <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-5 text-center dark:border-zinc-800 dark:bg-zinc-900/60">
-          <p className="text-lg font-semibold text-zinc-800 dark:text-zinc-200">
-            Tickets — <span className="font-bold">$200</span>
-          </p>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Hotel + boat + signed book included
-          </p>
-        </div>
+      {selectedProduct && (
+        <EmbeddedCheckoutProvider
+          key={selectedProduct}
+          stripe={stripePromise}
+          options={checkoutOptions}
+        >
+          <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-[#0a0a0a]">
+            <EmbeddedCheckout />
+          </div>
+        </EmbeddedCheckoutProvider>
       )}
-
-      {!pricingConfigured && (
-        <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-5 text-center dark:border-zinc-800 dark:bg-zinc-900/60">
-          <p className="text-zinc-600 dark:text-zinc-400">
-            <span className="font-semibold text-zinc-700 dark:text-zinc-300">
-              $150
-            </span>{" "}
-            early bird ·{" "}
-            <span className="font-semibold">$200</span> regular
-          </p>
-        </div>
-      )}
-
-      <EmbeddedCheckoutProvider
-        stripe={stripePromise}
-        options={checkoutOptions}
-      >
-        <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-[#0a0a0a]">
-          <EmbeddedCheckout />
-        </div>
-      </EmbeddedCheckoutProvider>
     </div>
   );
 }

@@ -6,12 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "stripe:listen": "stripe -p htns listen --forward-to http://localhost:3000/api/webhooks/stripe",
+    "stripe:trigger:checkout": "stripe -p htns trigger checkout.session.completed",
+    "ghl:create-boat-seats-custom-value": "node scripts/ghl-create-boat-seats-custom-value.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@stripe/react-stripe-js": "^5.6.1",
     "@stripe/stripe-js": "^8.11.0",
+    "@types/luxon": "^3.7.1",
     "@vercel/analytics": "^2.0.1",
     "luxon": "^3.7.2",
     "next": "16.1.6",
@@ -23,7 +27,6 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/luxon": "^3.7.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -1,8 +1,12 @@
-import { upsertGhlContactFromPurchase } from "@/lib/ghl";
+import { ghlInboundWebhookBodyFailed } from "@/lib/ghl-inbound-webhook-response";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 export const runtime = "nodejs";
+
+/** GoHighLevel workflow inbound webhook (Stripe purchase → contact/tags in GHL). */
+const GHL_PURCHASE_WEBHOOK_URL =
+  "https://services.leadconnectorhq.com/hooks/lL1nFSI2SuZyY9yXEnPv/webhook-trigger/d9557c22-9110-4f3c-9e1d-6bc4cc6ac7c6";
 
 function splitName(name: string | null | undefined): {
   firstName?: string;
@@ -15,6 +19,40 @@ function splitName(name: string | null | undefined): {
     firstName: parts[0],
     lastName: parts.slice(1).join(" "),
   };
+}
+
+async function notifyPurchaseWebhook(payload: {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  fullName?: string;
+  phone?: string;
+  /** From checkout session metadata (e.g. boat-and-hotel | hotel-only). */
+  product?: string;
+  stripeSessionId: string;
+  stripeCustomerId?: string;
+  amountTotal: number | null;
+  currency: string | null;
+}): Promise<void> {
+  const body = JSON.stringify(payload);
+  const res = await fetch(GHL_PURCHASE_WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body,
+  });
+
+  const text = await res.text();
+  const ghlErr = ghlInboundWebhookBodyFailed(text);
+  if (!res.ok || ghlErr) {
+    const detail = ghlErr ?? text.slice(0, 500);
+    console.error("[stripe webhook] GHL inbound webhook response:", {
+      status: res.status,
+      body: text.slice(0, 800),
+    });
+    throw new Error(
+      `Purchase webhook failed (${res.status}): ${detail}`,
+    );
+  }
 }
 
 export async function POST(request: Request) {
@@ -52,21 +90,37 @@ export async function POST(request: Request) {
 
     const { firstName, lastName } = splitName(session.customer_details?.name);
     const phone = session.customer_details?.phone?.trim();
+    const fullName = session.customer_details?.name?.trim();
+    const stripeCustomerId =
+      typeof session.customer === "string" ? session.customer : undefined;
+    const product =
+      typeof session.metadata?.product === "string"
+        ? session.metadata.product
+        : undefined;
 
     try {
-      await upsertGhlContactFromPurchase({
+      await notifyPurchaseWebhook({
         email,
         firstName,
         lastName,
+        fullName,
         phone,
+        product,
+        stripeSessionId: session.id,
+        stripeCustomerId,
+        amountTotal: session.amount_total,
+        currency: session.currency,
       });
     } catch (e) {
       console.error(
-        "[stripe webhook] GHL upsert failed:",
+        "[stripe webhook] Purchase webhook failed:",
         { sessionId: session.id },
         e,
       );
-      return NextResponse.json({ error: "GHL upsert failed" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Purchase webhook failed" },
+        { status: 500 },
+      );
     }
   }
 

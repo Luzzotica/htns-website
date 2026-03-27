@@ -1,15 +1,9 @@
+import {
+  resolveProductFromPriceId,
+  type BookPartyProduct,
+} from "@/lib/book-party-pricing";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-
-export type BookPartyPricingTier = "early_bird" | "regular" | "unknown";
-
-function resolvePricingTier(priceId: string | undefined): BookPartyPricingTier {
-  const early = process.env.STRIPE_PRICE_BOOK_PARTY_EARLY?.trim();
-  const regular = process.env.STRIPE_PRICE_BOOK_PARTY_REGULAR?.trim();
-  if (priceId && early && priceId === early) return "early_bird";
-  if (priceId && regular && priceId === regular) return "regular";
-  return "unknown";
-}
 
 export async function GET(request: Request) {
   const secret = process.env.STRIPE_SECRET_KEY?.trim();
@@ -43,17 +37,23 @@ export async function GET(request: Request) {
         ? lineItem.price.id
         : undefined;
 
+    const product: BookPartyProduct | null = paid
+      ? (session.metadata?.product as BookPartyProduct | undefined) ??
+        resolveProductFromPriceId(priceId)
+      : null;
+
     return NextResponse.json({
       ok: paid,
       payment_status: session.payment_status,
-      pricing_tier: paid ? resolvePricingTier(priceId) : null,
+      product,
       amount_total: paid ? session.amount_total : null,
       currency: paid ? session.currency : null,
     });
   } catch (err) {
     console.error("[book-party] session retrieve:", err);
-    return NextResponse.json({ ok: false, error: "Invalid session" }, {
-      status: 400,
-    });
+    return NextResponse.json(
+      { ok: false, error: "Invalid session" },
+      { status: 400 },
+    );
   }
 }
