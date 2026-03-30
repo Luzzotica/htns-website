@@ -1,16 +1,51 @@
 import { Footer } from "@/components/Footer";
 import { BookCard } from "@/components/BookCard";
 import { EmailForm } from "@/components/EmailForm";
+import { EarlyBirdCountdown } from "@/components/EarlyBirdCountdown";
+import { getBookPartyPricingState } from "@/lib/book-party-pricing";
+import Link from "next/link";
+import { Suspense } from "react";
 
 const CYBERSECURITY_URL = "https://howtonotsuckatcybersecurity.com";
 
-export default function Home() {
+export default async function Home() {
+  const pricing = getBookPartyPricingState();
+
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex flex-1 flex-col px-6 py-16">
         <div className="mx-auto max-w-4xl">
+          {/* Book Party CTA */}
+          <section className="rounded-xl border border-zinc-200 bg-zinc-50/80 p-8 text-center dark:border-zinc-800 dark:bg-zinc-900/40">
+            <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-3xl">
+              How&nbsp;to&nbsp;Not&nbsp;Suck&#8482; Book Party
+            </h2>
+            <p className="mx-auto mt-4 max-w-lg text-zinc-600 dark:text-zinc-400">
+              April&nbsp;18 &mdash; Join author Vince Romney for a private boat
+              party, book signing, live Q&amp;A, and an afternoon at the
+              AC&nbsp;Hotel. Five hours, two venues, limited seats.
+            </p>
+            {pricing.configured &&
+              pricing.isEarlyBird &&
+              pricing.earlyBirdEndsAtISO && (
+                <div className="mx-auto mt-6 max-w-sm">
+                  <Suspense>
+                    <EarlyBirdCountdown
+                      endsAtISO={pricing.earlyBirdEndsAtISO}
+                    />
+                  </Suspense>
+                </div>
+              )}
+            <Link
+              href="/htns-book-party"
+              className="mt-6 inline-block rounded-lg bg-zinc-900 px-8 py-3 font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            >
+              Get Your Ticket
+            </Link>
+          </section>
+
           {/* Hero */}
-          <section className="text-center">
+          <section className="mt-20 text-center">
             <h1 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-5xl">
               HOW TO NOT SUCK
             </h1>
@@ -50,6 +85,19 @@ export default function Home() {
             <div className="mx-auto mt-8 max-w-sm">
               <EmailForm submitLabel="Join the list" />
             </div>
+          </section>
+
+          {/* Become an author */}
+          <section className="mt-20 text-center">
+            <p className="text-zinc-600 dark:text-zinc-400">
+              Interested in writing a How&nbsp;to&nbsp;Not&nbsp;Suck book?{" "}
+              <Link
+                href="/become-an-author"
+                className="font-medium text-zinc-900 underline underline-offset-4 transition-colors hover:text-zinc-700 dark:text-zinc-100 dark:hover:text-zinc-300"
+              >
+                Apply to become an author
+              </Link>
+            </p>
           </section>
         </div>
       </main>

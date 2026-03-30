@@ -51,8 +51,8 @@ export default async function HtnsBookPartyPage() {
             </p>
 
             <p className="mt-4 max-w-xl text-lg font-medium text-zinc-800 dark:text-zinc-200">
-              Now he wrote the book on how to stop them. And he&apos;s throwing a
-              party to prove you don&apos;t need a PhD to protect yourself.
+              Now he wrote the book on how to stop them. And he&apos;s throwing
+              a party to prove you don&apos;t need a PhD to protect yourself.
             </p>
 
             <Image
@@ -68,8 +68,8 @@ export default async function HtnsBookPartyPage() {
               How&nbsp;to&nbsp;Not&nbsp;Suck&#8482; Book Party
             </p>
             <p className="mt-2 text-lg text-zinc-600 dark:text-zinc-400">
-              April&nbsp;18 &middot; 5&nbsp;hours &middot; boat &plus; hotel
-              &middot; limited seats
+              April&nbsp;18 &middot; 5&nbsp;hours &middot; boat + hotel &middot;
+              limited seats
             </p>
           </div>
 
@@ -87,15 +87,14 @@ export default async function HtnsBookPartyPage() {
                 The guy you want in your corner
               </h2>
               <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-                Deputy CISO &amp; Enterprise Security Architect
-                at Nu&nbsp;Skin. Founder of Digital Defense Security. CISSP,
-                CCSP, CSSLP. Former President of the ISC2
-                Utah&nbsp;Chapter. The person Fortune&nbsp;500 companies call
-                when things go wrong.
+                Deputy CISO &amp; Enterprise Security Architect at Nu&nbsp;Skin.
+                Founder of Digital Defense Security. CISSP, CCSP, CSSLP. Former
+                President of the ISC2 Utah&nbsp;Chapter. The person
+                Fortune&nbsp;500 companies call when things go wrong.
               </p>
               <p className="mt-3 text-zinc-600 dark:text-zinc-400">
-                Vince didn&apos;t write another boring cybersecurity textbook. He
-                wrote the no&#8209;BS, actually&#8209;useful guide for real
+                Vince didn&apos;t write another boring cybersecurity textbook.
+                He wrote the no&#8209;BS, actually&#8209;useful guide for real
                 people who are tired of being easy targets. No jargon. No
                 buzzword bingo. Just the stuff that matters.
               </p>
@@ -114,8 +113,8 @@ export default async function HtnsBookPartyPage() {
                 </p>
                 <p>
                   12:00&ndash;2:00 pm on the water. On&#8209;board lunch, book
-                  signing, photos with Vince, and networking with
-                  entrepreneurs, execs &amp; security pros. Only 96 seats.
+                  signing, photos with Vince, and networking with entrepreneurs,
+                  execs &amp; security pros. Only 96 seats.
                 </p>
               </div>
               <div>
@@ -139,13 +138,17 @@ export default async function HtnsBookPartyPage() {
               Choose the experience that works for you. The boat has limited
               seats &mdash; grab yours before they&apos;re gone.
             </p>
-            {pricing.configured && pricing.isEarlyBird && pricing.earlyBirdEndsAtISO && (
-              <div className="mt-6">
-                <Suspense>
-                  <EarlyBirdCountdown endsAtISO={pricing.earlyBirdEndsAtISO} />
-                </Suspense>
-              </div>
-            )}
+            {pricing.configured &&
+              pricing.isEarlyBird &&
+              pricing.earlyBirdEndsAtISO && (
+                <div className="mt-6">
+                  <Suspense>
+                    <EarlyBirdCountdown
+                      endsAtISO={pricing.earlyBirdEndsAtISO}
+                    />
+                  </Suspense>
+                </div>
+              )}
 
             <div className="mt-8">
               <Suspense
