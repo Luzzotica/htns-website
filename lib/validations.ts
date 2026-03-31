@@ -19,7 +19,7 @@ export const authorRequestSchema = z.object({
     .string()
     .min(1, "Please share what makes you qualified to write about this topic"),
   previouslyPublished: z.enum(["yes", "no", "currently-writing"], {
-    required_error: "Please select an option",
+    error: "Please select an option",
   }),
   additionalInfo: z.string().optional(),
 });
