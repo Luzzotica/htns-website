@@ -1,7 +1,5 @@
-import {
-  getStripePriceId,
-  type BookPartyProduct,
-} from "@/lib/book-party-pricing";
+import { BOOK_PARTY_CHECKOUT_FUNNEL } from "@/lib/book-party-funnel";
+import { getBookPartyVipStripePriceId } from "@/lib/book-party-pricing";
 import { isValidBookPartyReturnPath } from "@/lib/book-party-return-path";
 import { getBoatSeatsRemaining } from "@/lib/ghl";
 import { NextResponse } from "next/server";
@@ -10,7 +8,6 @@ import { z } from "zod";
 
 const bodySchema = z.object({
   returnPath: z.string().min(1),
-  product: z.enum(["boat-and-hotel", "hotel-only"]),
   colorScheme: z.enum(["light", "dark"]).optional(),
 });
 
@@ -43,33 +40,31 @@ export async function POST(request: Request) {
   const parsed = bodySchema.safeParse(json);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Invalid body: product and returnPath required" },
+      { error: "Invalid body: returnPath required" },
       { status: 400 },
     );
   }
 
-  const { returnPath, product, colorScheme = "light" } = parsed.data;
+  const { returnPath, colorScheme = "light" } = parsed.data;
   if (!isValidBookPartyReturnPath(returnPath)) {
     return NextResponse.json({ error: "Invalid returnPath" }, { status: 400 });
   }
 
-  if (product === "boat-and-hotel") {
-    try {
-      const seats = await getBoatSeatsRemaining();
-      if (seats <= 0) {
-        return NextResponse.json(
-          { error: "Boat party tickets are sold out" },
-          { status: 409 },
-        );
-      }
-    } catch (e) {
-      console.error("[book-party] seat check:", e);
+  try {
+    const seats = await getBoatSeatsRemaining();
+    if (seats <= 0) {
+      return NextResponse.json(
+        { error: "Boat party tickets are sold out" },
+        { status: 409 },
+      );
     }
+  } catch (e) {
+    console.error("[book-party] seat check:", e);
   }
 
   let priceId: string;
   try {
-    priceId = getStripePriceId(product);
+    priceId = getBookPartyVipStripePriceId();
   } catch (e) {
     console.error("[book-party] price config:", e);
     return NextResponse.json(
@@ -97,7 +92,7 @@ export async function POST(request: Request) {
       billing_address_collection: "required",
       phone_number_collection: { enabled: true },
       automatic_tax: { enabled: false },
-      metadata: { product },
+      metadata: { product: "boat-and-hotel", funnel: BOOK_PARTY_CHECKOUT_FUNNEL },
       ...(colorScheme === "dark"
         ? {
             branding_settings: {

@@ -1,38 +1,11 @@
-import { BookPartyClient } from "@/components/BookPartyClient";
-import { EarlyBirdCountdown } from "@/components/EarlyBirdCountdown";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import {
-  BOAT_SEATS_TOTAL,
-  getBookPartyPricingState,
-} from "@/lib/book-party-pricing";
-import { getBoatSeatsRemaining } from "@/lib/ghl";
 import Image from "next/image";
-import { Suspense } from "react";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
-async function fetchInitialSeats(): Promise<number | null> {
-  try {
-    return await getBoatSeatsRemaining();
-  } catch (e) {
-    console.error("[book-party] Could not fetch boat seats:", e);
-    return null;
-  }
-}
-
 export default async function HtnsBookPartyPage() {
-  const [initialBoatSeats, pricing] = await Promise.all([
-    fetchInitialSeats(),
-    Promise.resolve(getBookPartyPricingState()),
-  ]);
-
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-
-      <main className="flex flex-1 flex-col px-6 py-12">
-        <div className="mx-auto w-full max-w-3xl">
+    <div className="mx-auto w-full max-w-3xl">
           {/* ── Hero ── */}
           <div className="flex flex-col items-center text-center">
             <h1 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-5xl">
@@ -129,46 +102,26 @@ export default async function HtnsBookPartyPage() {
             </div>
           </section>
 
-          {/* ── Tickets / checkout ── */}
+          {/* ── Register CTA ── */}
           <section className="mt-14">
             <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-              Grab your ticket
+              Reserve your spot
             </h2>
             <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-              Choose the experience that works for you. The boat has limited
-              seats &mdash; grab yours before they&apos;re gone.
+              Registration is free for everyone. After you sign up, you&apos;ll
+              have the option to upgrade to a VIP ticket (boat party + hotel)
+              while seats last.
             </p>
-            {pricing.configured &&
-              pricing.isEarlyBird &&
-              pricing.earlyBirdEndsAtISO && (
-                <div className="mt-6">
-                  <Suspense>
-                    <EarlyBirdCountdown
-                      endsAtISO={pricing.earlyBirdEndsAtISO}
-                    />
-                  </Suspense>
-                </div>
-              )}
 
-            <div className="mt-8">
-              <Suspense
-                fallback={
-                  <p className="text-zinc-500 dark:text-zinc-400">
-                    Loading&hellip;
-                  </p>
-                }
+            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+              <Link
+                href="/htns-book-party/register"
+                className="inline-flex min-h-[44px] min-w-[200px] items-center justify-center rounded-lg bg-blue-600 px-8 py-3 text-base font-semibold text-white transition hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
               >
-                <BookPartyClient
-                  initialBoatSeats={initialBoatSeats}
-                  boatSeatsTotal={BOAT_SEATS_TOTAL}
-                  isEarlyBird={pricing.isEarlyBird}
-                />
-              </Suspense>
+                Register free
+              </Link>
             </div>
           </section>
         </div>
-      </main>
-      <Footer />
-    </div>
   );
 }

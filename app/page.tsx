@@ -1,16 +1,13 @@
+import { BookPartyEventCountdown } from "@/components/BookPartyEventCountdown";
 import { Footer } from "@/components/Footer";
 import { BookCard } from "@/components/BookCard";
 import { EmailForm } from "@/components/EmailForm";
-import { EarlyBirdCountdown } from "@/components/EarlyBirdCountdown";
-import { getBookPartyPricingState } from "@/lib/book-party-pricing";
+import { BOOK_PARTY_FUNNEL_ENTRY_URL } from "@/lib/book-party-funnel";
 import Link from "next/link";
-import { Suspense } from "react";
 
 const CYBERSECURITY_URL = "https://howtonotsuckatcybersecurity.com";
 
 export default async function Home() {
-  const pricing = getBookPartyPricingState();
-
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex flex-1 flex-col px-6 py-16">
@@ -25,23 +22,13 @@ export default async function Home() {
               party, book signing, live Q&amp;A, and an afternoon at the
               AC&nbsp;Hotel. Five hours, two venues, limited seats.
             </p>
-            {pricing.configured &&
-              pricing.isEarlyBird &&
-              pricing.earlyBirdEndsAtISO && (
-                <div className="mx-auto mt-6 max-w-sm">
-                  <Suspense>
-                    <EarlyBirdCountdown
-                      endsAtISO={pricing.earlyBirdEndsAtISO}
-                    />
-                  </Suspense>
-                </div>
-              )}
-            <Link
-              href="/htns-book-party"
+            <BookPartyEventCountdown />
+            <a
+              href={BOOK_PARTY_FUNNEL_ENTRY_URL}
               className="mt-6 inline-block rounded-lg bg-zinc-900 px-8 py-3 font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
-              Get Your Ticket
-            </Link>
+              Book Party details &amp; register
+            </a>
           </section>
 
           {/* Hero */}

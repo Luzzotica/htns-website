@@ -1,54 +1,18 @@
-import { DateTime } from "luxon";
-
 export type BookPartyProduct = "boat-and-hotel" | "hotel-only";
 
 export const BOAT_SEATS_TOTAL = 96;
 
+/** Display amounts for UI (keep in sync with Stripe regular price). */
 export type ProductPricing = {
-  earlyBirdCents: number;
   regularCents: number;
 };
 
 export const PRODUCTS: Record<BookPartyProduct, ProductPricing> = {
-  "boat-and-hotel": { earlyBirdCents: 15000, regularCents: 20000 },
-  "hotel-only": { earlyBirdCents: 5000, regularCents: 7500 },
+  /** VIP: boat + hotel. Update `regularCents` when you change Stripe. */
+  "boat-and-hotel": { regularCents: 20000 },
+  /** Legacy webhook resolution only (no longer sold on site). */
+  "hotel-only": { regularCents: 7500 },
 };
-
-export type BookPartyPricingState = {
-  configured: boolean;
-  earlyBirdEndsAtISO: string | null;
-  isEarlyBird: boolean;
-};
-
-/**
- * Early bird is active for all instants strictly before the start of
- * calendar day (eventDate − 7 days) in BOOK_PARTY_TIMEZONE.
- */
-export function getBookPartyPricingState(
-  now: Date = new Date(),
-): BookPartyPricingState {
-  const eventDateStr = process.env.BOOK_PARTY_EVENT_DATE?.trim();
-  const tz = process.env.BOOK_PARTY_TIMEZONE?.trim() || "America/Chicago";
-
-  if (!eventDateStr) {
-    return { configured: false, earlyBirdEndsAtISO: null, isEarlyBird: true };
-  }
-
-  const eventDay = DateTime.fromISO(eventDateStr, { zone: tz }).startOf("day");
-  if (!eventDay.isValid) {
-    return { configured: false, earlyBirdEndsAtISO: null, isEarlyBird: true };
-  }
-
-  const earlyBirdEnd = eventDay.minus({ days: 7 });
-  const nowLocal = DateTime.fromJSDate(now).setZone(tz);
-  const isEarlyBird = nowLocal < earlyBirdEnd;
-
-  return {
-    configured: true,
-    earlyBirdEndsAtISO: earlyBirdEnd.toISO(),
-    isEarlyBird,
-  };
-}
 
 /** First matching env wins. Supports legacy `STRIPE_PRICE_BOOK_PARTY_*` names. */
 function stripePriceIdFromEnv(keys: string[]): string {
@@ -59,25 +23,14 @@ function stripePriceIdFromEnv(keys: string[]): string {
   throw new Error(`One of [${keys.join(", ")}] must be set`);
 }
 
-export function getStripePriceId(product: BookPartyProduct): string {
-  const { isEarlyBird } = getBookPartyPricingState();
-
-  if (product === "boat-and-hotel") {
-    return stripePriceIdFromEnv(
-      isEarlyBird
-        ? ["STRIPE_PRICE_BOAT_AND_HOTEL_EARLY", "STRIPE_PRICE_BOOK_PARTY_EARLY"]
-        : [
-            "STRIPE_PRICE_BOAT_AND_HOTEL_REGULAR",
-            "STRIPE_PRICE_BOOK_PARTY_REGULAR",
-          ],
-    );
-  }
-
-  return stripePriceIdFromEnv(
-    isEarlyBird
-      ? ["STRIPE_PRICE_HOTEL_ONLY_EARLY", "STRIPE_PRICE_BOOK_PARTY_EARLY"]
-      : ["STRIPE_PRICE_HOTEL_ONLY_REGULAR", "STRIPE_PRICE_BOOK_PARTY_REGULAR"],
-  );
+/**
+ * VIP checkout: boat + hotel only, always the regular Stripe price (no early bird).
+ */
+export function getBookPartyVipStripePriceId(): string {
+  return stripePriceIdFromEnv([
+    "STRIPE_PRICE_BOAT_AND_HOTEL_REGULAR",
+    "STRIPE_PRICE_BOOK_PARTY_REGULAR",
+  ]);
 }
 
 const ALL_PRICE_ENV_KEYS: Array<{

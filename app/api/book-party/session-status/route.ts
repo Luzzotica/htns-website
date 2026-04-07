@@ -42,10 +42,16 @@ export async function GET(request: Request) {
         resolveProductFromPriceId(priceId)
       : null;
 
+    const funnel =
+      typeof session.metadata?.funnel === "string"
+        ? session.metadata.funnel
+        : null;
+
     return NextResponse.json({
       ok: paid,
       payment_status: session.payment_status,
       product,
+      funnel,
       amount_total: paid ? session.amount_total : null,
       currency: paid ? session.currency : null,
     });

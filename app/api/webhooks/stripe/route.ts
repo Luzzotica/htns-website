@@ -29,6 +29,8 @@ async function notifyPurchaseWebhook(payload: {
   phone?: string;
   /** From checkout session metadata (e.g. boat-and-hotel | hotel-only). */
   product?: string;
+  /** From checkout session metadata (e.g. book_party_vip). */
+  funnel?: string;
   stripeSessionId: string;
   stripeCustomerId?: string;
   amountTotal: number | null;
@@ -97,6 +99,10 @@ export async function POST(request: Request) {
       typeof session.metadata?.product === "string"
         ? session.metadata.product
         : undefined;
+    const funnel =
+      typeof session.metadata?.funnel === "string"
+        ? session.metadata.funnel
+        : undefined;
 
     try {
       await notifyPurchaseWebhook({
@@ -106,6 +112,7 @@ export async function POST(request: Request) {
         fullName,
         phone,
         product,
+        funnel,
         stripeSessionId: session.id,
         stripeCustomerId,
         amountTotal: session.amount_total,
