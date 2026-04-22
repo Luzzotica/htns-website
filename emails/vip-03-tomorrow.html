@@ -1,123 +1,392 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tomorrow: your VIP Book Party</title>
-</head>
-<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f5;">
-<tr><td align="center" style="padding:40px 16px;">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tomorrow: your VIP Book Party</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f5;
+      font-family:
+        -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto,
+        Helvetica, Arial, sans-serif;
+    "
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="background-color: #f4f4f5"
+    >
+      <tr>
+        <td align="center" style="padding: 40px 16px">
+          <table
+            role="presentation"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+              max-width: 560px;
+              background-color: #ffffff;
+              border-radius: 12px;
+              overflow: hidden;
+            "
+          >
+            <!-- Header -->
+            <tr>
+              <td
+                style="
+                  background-color: #78350f;
+                  padding: 32px 32px 24px;
+                  text-align: center;
+                "
+              >
+                <p
+                  style="
+                    margin: 0 0 4px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                    color: #fde68a;
+                  "
+                >
+                  VIP
+                </p>
+                <h1
+                  style="
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 700;
+                    color: #ffffff;
+                    line-height: 1.3;
+                  "
+                >
+                  Tomorrow. You. The boat. Let's go.
+                </h1>
+              </td>
+            </tr>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#ffffff;border-radius:12px;overflow:hidden;">
+            <!-- Body -->
+            <tr>
+              <td style="padding: 32px">
+                <p
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #3f3f46;
+                  "
+                >
+                  Hey {{contact.first_name}},
+                </p>
+                <p
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #3f3f46;
+                  "
+                >
+                  This is your final reminder. Tomorrow is the
+                  <strong
+                    >How&nbsp;to&nbsp;Not&nbsp;Suck&trade; Book Party</strong
+                  >
+                  and you've got VIP access to the whole thing. Here's the cheat
+                  sheet.
+                </p>
 
-<!-- Header -->
-<tr><td style="background-color:#78350f;padding:32px 32px 24px;text-align:center;">
-  <p style="margin:0 0 4px;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#fde68a;">VIP</p>
-  <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;">
-    Tomorrow. You. The boat. Let's go.
-  </h1>
-</td></tr>
+                <!-- Cheat sheet -->
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="
+                    margin: 0 0 24px;
+                    background-color: #fafafa;
+                    border-radius: 8px;
+                    border: 1px solid #e4e4e7;
+                  "
+                >
+                  <tr>
+                    <td style="padding: 20px 24px">
+                      <p
+                        style="
+                          margin: 0 0 16px;
+                          font-size: 16px;
+                          font-weight: 700;
+                          color: #18181b;
+                        "
+                      >
+                        Your day at a glance
+                      </p>
 
-<!-- Body -->
-<tr><td style="padding:32px;">
-  <p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#3f3f46;">
-    Hey {{contact.first_name}},
-  </p>
-  <p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#3f3f46;">
-    This is your final reminder. Tomorrow is the <strong>How&nbsp;to&nbsp;Not&nbsp;Suck&trade; Book Party</strong> and you've got VIP access to the whole thing. Here's the cheat sheet.
-  </p>
+                      <table
+                        role="presentation"
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="0"
+                      >
+                        <tr>
+                          <td
+                            width="100"
+                            valign="top"
+                            style="
+                              padding: 0 0 12px;
+                              font-size: 14px;
+                              font-weight: 600;
+                              color: #b45309;
+                            "
+                          >
+                            11:30 AM
+                          </td>
+                          <td
+                            valign="top"
+                            style="
+                              padding: 0 0 12px;
+                              font-size: 14px;
+                              color: #3f3f46;
+                            "
+                          >
+                            Board the boat &middot; 550 Port O Call Way, Naples,
+                            FL 34102
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            width="100"
+                            valign="top"
+                            style="
+                              padding: 0 0 12px;
+                              font-size: 14px;
+                              font-weight: 600;
+                              color: #b45309;
+                            "
+                          >
+                            12:00 PM
+                          </td>
+                          <td
+                            valign="top"
+                            style="
+                              padding: 0 0 12px;
+                              font-size: 14px;
+                              color: #3f3f46;
+                            "
+                          >
+                            Boat departs &middot; Lunch, signing, photos,
+                            networking
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            width="100"
+                            valign="top"
+                            style="
+                              padding: 0 0 12px;
+                              font-size: 14px;
+                              font-weight: 600;
+                              color: #b45309;
+                            "
+                          >
+                            ~1:30 PM
+                          </td>
+                          <td
+                            valign="top"
+                            style="
+                              padding: 0 0 12px;
+                              font-size: 14px;
+                              color: #3f3f46;
+                            "
+                          >
+                            Back at the dock
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            width="100"
+                            valign="top"
+                            style="
+                              padding: 0 0 12px;
+                              font-size: 14px;
+                              font-weight: 600;
+                              color: #3b82f6;
+                            "
+                          >
+                            2:00 PM
+                          </td>
+                          <td
+                            valign="top"
+                            style="
+                              padding: 0 0 12px;
+                              font-size: 14px;
+                              color: #3f3f46;
+                            "
+                          >
+                            AC Hotel event &middot; doors open &middot; AC Hotel
+                            Naples 5th Avenue, 455 12th St S, Naples, FL 34102
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            width="100"
+                            valign="top"
+                            style="
+                              font-size: 14px;
+                              font-weight: 600;
+                              color: #3b82f6;
+                            "
+                          >
+                            2:00&ndash;5:00
+                          </td>
+                          <td
+                            valign="top"
+                            style="font-size: 14px; color: #3f3f46"
+                          >
+                            Cybersecurity &amp; how to not suck at AI, Q&amp;A,
+                            networking
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
 
-  <!-- Cheat sheet -->
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;background-color:#fafafa;border-radius:8px;border:1px solid #e4e4e7;">
-  <tr><td style="padding:20px 24px;">
-    <p style="margin:0 0 16px;font-size:16px;font-weight:700;color:#18181b;">Your day at a glance</p>
+                <!-- Key reminders -->
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="margin: 0 0 24px"
+                >
+                  <tr>
+                    <td
+                      valign="top"
+                      width="28"
+                      style="font-size: 16px; padding: 0 0 8px"
+                    >
+                      &#9888;&#65039;
+                    </td>
+                    <td
+                      valign="top"
+                      style="
+                        font-size: 15px;
+                        line-height: 1.5;
+                        color: #3f3f46;
+                        padding: 0 0 8px;
+                      "
+                    >
+                      <strong>The boat leaves at noon sharp.</strong> Be at the
+                      dock by 11:30. If you're late, the boat is already on the
+                      water.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      valign="top"
+                      width="28"
+                      style="font-size: 16px; padding: 0 0 8px"
+                    >
+                      &#9728;&#65039;
+                    </td>
+                    <td
+                      valign="top"
+                      style="
+                        font-size: 15px;
+                        line-height: 1.5;
+                        color: #3f3f46;
+                        padding: 0 0 8px;
+                      "
+                    >
+                      Sunglasses, comfortable shoes. Lunch is covered on the
+                      boat. Cash bar.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top" width="28" style="font-size: 16px">
+                      &#128663;
+                    </td>
+                    <td
+                      valign="top"
+                      style="font-size: 15px; line-height: 1.5; color: #3f3f46"
+                    >
+                      <strong>Parking:</strong> Complimentary parking at the AC
+                      Hotel&mdash;use it before the cruise (~10 minute walk to
+                      the port) and again for the hotel afternoon. Rideshare
+                      drop-off at Port O Call is fine if you prefer.<br />
+                      <strong>After the cruise:</strong> About 10 minutes by car
+                      or rideshare from Port O Call to the AC Hotel.
+                    </td>
+                  </tr>
+                </table>
 
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-    <tr>
-      <td width="100" valign="top" style="padding:0 0 12px;font-size:14px;font-weight:600;color:#b45309;">11:30 AM</td>
-      <td valign="top" style="padding:0 0 12px;font-size:14px;color:#3f3f46;">
-        Board the boat &middot; 550 Port O Call Way, Naples, FL 34102
-      </td>
-    </tr>
-    <tr>
-      <td width="100" valign="top" style="padding:0 0 12px;font-size:14px;font-weight:600;color:#b45309;">12:00 PM</td>
-      <td valign="top" style="padding:0 0 12px;font-size:14px;color:#3f3f46;">
-        Boat departs &middot; Lunch, signing, photos, networking
-      </td>
-    </tr>
-    <tr>
-      <td width="100" valign="top" style="padding:0 0 12px;font-size:14px;font-weight:600;color:#b45309;">~2:00 PM</td>
-      <td valign="top" style="padding:0 0 12px;font-size:14px;color:#3f3f46;">
-        Back at the dock
-      </td>
-    </tr>
-    <tr>
-      <td width="100" valign="top" style="padding:0 0 12px;font-size:14px;font-weight:600;color:#3b82f6;">2:30 PM</td>
-      <td valign="top" style="padding:0 0 12px;font-size:14px;color:#3f3f46;">
-        AC Hotel Naples 5th Avenue, 455 12th St S, Naples, FL 34102
-      </td>
-    </tr>
-    <tr>
-      <td width="100" valign="top" style="font-size:14px;font-weight:600;color:#3b82f6;">2:30&ndash;4:30</td>
-      <td valign="top" style="font-size:14px;color:#3f3f46;">
-        Cybersecurity &amp; how to not suck at AI, Q&amp;A, networking
-      </td>
-    </tr>
+                <p
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #3f3f46;
+                  "
+                >
+                  That's it. Five hours, two venues, one great afternoon. Bring
+                  energy and a question about cybersecurity or AI for
+                  Vince&mdash;we'll handle the rest.
+                </p>
+
+                <p
+                  style="
+                    margin: 0;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #3f3f46;
+                  "
+                >
+                  See you on the dock tomorrow.
+                </p>
+                <p
+                  style="
+                    margin: 16px 0 0;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #3f3f46;
+                  "
+                >
+                  &mdash; The HTNS Team
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Footer -->
+          <table
+            role="presentation"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="max-width: 560px"
+          >
+            <tr>
+              <td style="padding: 24px 32px; text-align: center">
+                <p style="margin: 0; font-size: 12px; color: #a1a1aa">
+                  How to Not Suck&trade; &middot; {{location.full_address}}
+                </p>
+                <p style="margin: 8px 0 0; font-size: 12px; color: #a1a1aa">
+                  <a
+                    href="{{unsubscribe_link}}"
+                    style="color: #a1a1aa; text-decoration: underline"
+                    >Unsubscribe</a
+                  >
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
     </table>
-  </td></tr>
-  </table>
-
-  <!-- Key reminders -->
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
-  <tr>
-    <td valign="top" width="28" style="font-size:16px;padding:0 0 8px;">&#9888;&#65039;</td>
-    <td valign="top" style="font-size:15px;line-height:1.5;color:#3f3f46;padding:0 0 8px;">
-      <strong>The boat leaves at noon sharp.</strong> Be at the dock by 11:30. If you're late, the boat is already on the water.
-    </td>
-  </tr>
-  <tr>
-    <td valign="top" width="28" style="font-size:16px;padding:0 0 8px;">&#9728;&#65039;</td>
-    <td valign="top" style="font-size:15px;line-height:1.5;color:#3f3f46;padding:0 0 8px;">
-      Sunglasses, comfortable shoes. Lunch and drinks are covered on the boat.
-    </td>
-  </tr>
-  <tr>
-    <td valign="top" width="28" style="font-size:16px;">&#128663;</td>
-    <td valign="top" style="font-size:15px;line-height:1.5;color:#3f3f46;">
-      <strong>Parking (boat):</strong> Port O Call Marina on-site parking; rideshare drop-off is fine.<br>
-      <strong>After the cruise:</strong> About 10 minutes by car or rideshare to the AC Hotel.
-    </td>
-  </tr>
-  </table>
-
-  <p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#3f3f46;">
-    That's it. Five hours, two venues, one great afternoon. Bring energy and a question about cybersecurity or AI for Vince&mdash;we'll handle the rest.
-  </p>
-
-  <p style="margin:0;font-size:16px;line-height:1.6;color:#3f3f46;">
-    See you on the dock tomorrow.
-  </p>
-  <p style="margin:16px 0 0;font-size:16px;line-height:1.6;color:#3f3f46;">
-    &mdash; The HTNS Team
-  </p>
-</td></tr>
-
-</table>
-
-<!-- Footer -->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-<tr><td style="padding:24px 32px;text-align:center;">
-  <p style="margin:0;font-size:12px;color:#a1a1aa;">
-    How to Not Suck&trade; &middot; {{location.full_address}}
-  </p>
-  <p style="margin:8px 0 0;font-size:12px;color:#a1a1aa;">
-    <a href="{{unsubscribe_link}}" style="color:#a1a1aa;text-decoration:underline;">Unsubscribe</a>
-  </p>
-</td></tr>
-</table>
-
-</td></tr>
-</table>
-</body>
+  </body>
 </html>

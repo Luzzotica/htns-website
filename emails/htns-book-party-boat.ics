@@ -24,9 +24,9 @@ BEGIN:VEVENT
 UID:htns-book-party-vip-20260418-boat-r1@howtonotsuck.com
 DTSTAMP:20260403T120000Z
 DTSTART;TZID=America/New_York:20260418T113000
-DTEND;TZID=America/New_York:20260418T163000
+DTEND;TZID=America/New_York:20260418T170000
 SUMMARY:HTNS Book Party — VIP (full experience)
-DESCRIPTION:How to Not Suck Book Party — full VIP afternoon with Vince Romney.\n\nPart 1 — Boat\n11:30 AM — Boarding at 550 Port O Call Way\, Naples\, FL 34102\n12:00 PM — Boat departs (lunch on board)\n12:00–2:00 PM — Book signing\, photos\, networking\n~2:00 PM — Return to dock\n\nThen head to Part 2 at AC Hotel Naples 5th Avenue\, 455 12th St S\, Naples\, FL 34102 (~10 min drive / rideshare).\n\nPart 2 — AC Hotel\n2:30 PM — Doors open\n2:30–4:30 PM — Cybersecurity & how to not suck at AI\, live Q&A\, networking\n4:30 PM — Event ends
+DESCRIPTION:How to Not Suck Book Party — full VIP afternoon with Vince Romney.\n\nPart 1 — Boat\n11:30 AM — Boarding at 550 Port O Call Way\, Naples\, FL 34102\n12:00 PM — Boat departs (lunch on board)\n12:00–2:00 PM — Book signing\, photos\, networking\n~2:00 PM — Return to dock\n\nThen head to Part 2 at AC Hotel Naples 5th Avenue\, 455 12th St S\, Naples\, FL 34102 (~10 min drive / rideshare).\n\nPart 2 — AC Hotel\n2:00 PM — Doors open\n2:00–5:00 PM — Cybersecurity & how to not suck at AI\, live Q&A\, networking\n5:00 PM — Event ends
 LOCATION:550 Port O Call Way\, Naples\, FL 34102
 STATUS:CONFIRMED
 ORGANIZER;CN=How To Not Suck:mailto:deirdre@howtonotsuck.com

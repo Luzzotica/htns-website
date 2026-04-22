@@ -1,95 +1,303 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tomorrow: the Book Party</title>
-</head>
-<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f5;">
-<tr><td align="center" style="padding:40px 16px;">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tomorrow: the Book Party</title>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f5;
+      font-family:
+        -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto,
+        Helvetica, Arial, sans-serif;
+    "
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="background-color: #f4f4f5"
+    >
+      <tr>
+        <td align="center" style="padding: 40px 16px">
+          <table
+            role="presentation"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="
+              max-width: 560px;
+              background-color: #ffffff;
+              border-radius: 12px;
+              overflow: hidden;
+            "
+          >
+            <!-- Header -->
+            <tr>
+              <td
+                style="
+                  background-color: #18181b;
+                  padding: 32px 32px 24px;
+                  text-align: center;
+                "
+              >
+                <h1
+                  style="
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 700;
+                    color: #ffffff;
+                    line-height: 1.3;
+                  "
+                >
+                  Tomorrow's the day
+                </h1>
+              </td>
+            </tr>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#ffffff;border-radius:12px;overflow:hidden;">
+            <!-- Body -->
+            <tr>
+              <td style="padding: 32px">
+                <p
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #3f3f46;
+                  "
+                >
+                  Hey {{contact.first_name}},
+                </p>
+                <p
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #3f3f46;
+                  "
+                >
+                  Just a final heads-up&mdash;the
+                  <strong
+                    >How&nbsp;to&nbsp;Not&nbsp;Suck&trade; Book Party</strong
+                  >
+                  is tomorrow.
+                </p>
 
-<!-- Header -->
-<tr><td style="background-color:#18181b;padding:32px 32px 24px;text-align:center;">
-  <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;">
-    Tomorrow's the day
-  </h1>
-</td></tr>
+                <!-- Quick-reference card -->
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="
+                    margin: 0 0 24px;
+                    background-color: #eff6ff;
+                    border-radius: 8px;
+                    border: 1px solid #bfdbfe;
+                  "
+                >
+                  <tr>
+                    <td style="padding: 20px 24px">
+                      <p
+                        style="
+                          margin: 0 0 8px;
+                          font-size: 16px;
+                          font-weight: 700;
+                          color: #1e3a5f;
+                        "
+                      >
+                        Quick reference
+                      </p>
+                      <p
+                        style="margin: 0 0 4px; font-size: 14px; color: #1e40af"
+                      >
+                        <strong>Date:</strong> Friday, April 18, 2026
+                      </p>
+                      <p
+                        style="margin: 0 0 4px; font-size: 14px; color: #1e40af"
+                      >
+                        <strong>Time:</strong> 2:00&ndash;5:00 PM
+                      </p>
+                      <p
+                        style="margin: 0 0 4px; font-size: 14px; color: #1e40af"
+                      >
+                        <strong>Where:</strong> AC Hotel Naples 5th Avenue, 455
+                        12th St S, Naples, FL 34102
+                      </p>
+                      <p style="margin: 0; font-size: 14px; color: #1e40af">
+                        <strong>Parking:</strong> Use the AC Hotel garage and
+                        valet; check the hotel website for current rates.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
 
-<!-- Body -->
-<tr><td style="padding:32px;">
-  <p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#3f3f46;">
-    Hey {{contact.first_name}},
-  </p>
-  <p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#3f3f46;">
-    Just a final heads-up&mdash;the <strong>How&nbsp;to&nbsp;Not&nbsp;Suck&trade; Book Party</strong> is tomorrow.
-  </p>
+                <p
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #3f3f46;
+                  "
+                >
+                  <strong>What to bring:</strong> just yourself and a good
+                  question about cybersecurity or AI (or whatever you want to
+                  ask Vince). Seriously&mdash;the live Q&amp;A is the best part.
+                </p>
 
-  <!-- Quick-reference card -->
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;background-color:#eff6ff;border-radius:8px;border:1px solid #bfdbfe;">
-  <tr><td style="padding:20px 24px;">
-    <p style="margin:0 0 8px;font-size:16px;font-weight:700;color:#1e3a5f;">Quick reference</p>
-    <p style="margin:0 0 4px;font-size:14px;color:#1e40af;"><strong>Date:</strong> Friday, April 18, 2026</p>
-    <p style="margin:0 0 4px;font-size:14px;color:#1e40af;"><strong>Time:</strong> 2:30&ndash;4:30 PM</p>
-    <p style="margin:0 0 4px;font-size:14px;color:#1e40af;"><strong>Where:</strong> AC Hotel Naples 5th Avenue, 455 12th St S, Naples, FL 34102</p>
-    <p style="margin:0;font-size:14px;color:#1e40af;"><strong>Parking:</strong> Use the AC Hotel garage and valet; check the hotel website for current rates.</p>
-  </td></tr>
-  </table>
+                <p
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #3f3f46;
+                  "
+                >
+                  When you arrive, check in at the front. We'll have a table set
+                  up. No printed ticket needed&mdash;we have your name on the
+                  list.
+                </p>
 
-  <p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#3f3f46;">
-    <strong>What to bring:</strong> just yourself and a good question about cybersecurity or AI (or whatever you want to ask Vince). Seriously&mdash;the live Q&amp;A is the best part.
-  </p>
+                <!-- VIP last-chance upsell -->
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="
+                    margin: 24px 0;
+                    background-color: #fefce8;
+                    border: 1px solid #fde68a;
+                    border-radius: 8px;
+                  "
+                >
+                  <tr>
+                    <td style="padding: 20px 24px">
+                      <p
+                        style="
+                          margin: 0 0 8px;
+                          font-size: 15px;
+                          font-weight: 600;
+                          color: #92400e;
+                        "
+                      >
+                        Last call for VIP
+                      </p>
+                      <p
+                        style="
+                          margin: 0 0 12px;
+                          font-size: 14px;
+                          line-height: 1.5;
+                          color: #78350f;
+                        "
+                      >
+                        We still have
+                        <strong
+                          >{{custom_values.htns_book_party_seat_count}}</strong
+                        >
+                        VIP boat seats left for the
+                        <strong
+                          >private boat cruise (12&ndash;2&nbsp;PM)</strong
+                        >
+                        before the hotel event. On-board lunch and
+                        networking&mdash;then Vince goes deep on cybersecurity
+                        and AI at the hotel. It's the best way to kick off the
+                        afternoon.
+                      </p>
+                      <a
+                        href="https://funnels.howtonotsuck.com/book-party-vip"
+                        style="
+                          display: inline-block;
+                          padding: 10px 24px;
+                          background-color: #b45309;
+                          color: #ffffff;
+                          font-size: 14px;
+                          font-weight: 600;
+                          text-decoration: none;
+                          border-radius: 6px;
+                        "
+                      >
+                        Upgrade now
+                      </a>
+                    </td>
+                  </tr>
+                </table>
 
-  <p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#3f3f46;">
-    When you arrive, check in at the front. We'll have a table set up. No printed ticket needed&mdash;we have your name on the list.
-  </p>
+                <p
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #3f3f46;
+                  "
+                >
+                  We're looking forward to seeing you tomorrow.
+                </p>
 
-  <!-- VIP last-chance upsell -->
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;background-color:#fefce8;border:1px solid #fde68a;border-radius:8px;">
-  <tr><td style="padding:20px 24px;">
-    <p style="margin:0 0 8px;font-size:15px;font-weight:600;color:#92400e;">
-      Last call for VIP
-    </p>
-    <p style="margin:0 0 12px;font-size:14px;line-height:1.5;color:#78350f;">
-      We still have <strong>{{custom_values.htns_book_party_seat_count}}</strong> VIP boat seats left for the <strong>private boat cruise (12&ndash;2&nbsp;PM)</strong> before the hotel event. On-board lunch, book signing, photos with Vince, and networking&mdash;then Vince goes deep on cybersecurity and AI at the hotel. It's the best way to kick off the afternoon.
-    </p>
-    <a href="https://funnels.howtonotsuck.com/book-party-vip" style="display:inline-block;padding:10px 24px;background-color:#b45309;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;border-radius:6px;">
-      Upgrade now
-    </a>
-  </td></tr>
-  </table>
+                <p
+                  style="
+                    margin: 0;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    color: #3f3f46;
+                  "
+                >
+                  &mdash; The HTNS Team
+                </p>
 
-  <p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:#3f3f46;">
-    We're looking forward to seeing you tomorrow.
-  </p>
+                <!-- PS -->
+                <p
+                  style="
+                    margin: 24px 0 0;
+                    padding-top: 16px;
+                    border-top: 1px solid #e4e4e7;
+                    font-size: 14px;
+                    line-height: 1.5;
+                    color: #71717a;
+                  "
+                >
+                  <strong>P.S.</strong> If you've been on the fence about VIP,
+                  this is your last chance. Boat seats won't last through
+                  tonight.
+                  <a
+                    href="https://funnels.howtonotsuck.com/book-party-vip"
+                    style="color: #b45309; text-decoration: underline"
+                    >Grab yours here</a
+                  >.
+                </p>
+              </td>
+            </tr>
+          </table>
 
-  <p style="margin:0;font-size:16px;line-height:1.6;color:#3f3f46;">
-    &mdash; The HTNS Team
-  </p>
-
-  <!-- PS -->
-  <p style="margin:24px 0 0;padding-top:16px;border-top:1px solid #e4e4e7;font-size:14px;line-height:1.5;color:#71717a;">
-    <strong>P.S.</strong> If you've been on the fence about VIP, this is your last chance. Boat seats won't last through tonight. <a href="https://funnels.howtonotsuck.com/book-party-vip" style="color:#b45309;text-decoration:underline;">Grab yours here</a>.
-  </p>
-</td></tr>
-
-</table>
-
-<!-- Footer -->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-<tr><td style="padding:24px 32px;text-align:center;">
-  <p style="margin:0;font-size:12px;color:#a1a1aa;">
-    How to Not Suck&trade; &middot; {{location.full_address}}
-  </p>
-  <p style="margin:8px 0 0;font-size:12px;color:#a1a1aa;">
-    <a href="{{unsubscribe_link}}" style="color:#a1a1aa;text-decoration:underline;">Unsubscribe</a>
-  </p>
-</td></tr>
-</table>
-
-</td></tr>
-</table>
-</body>
+          <!-- Footer -->
+          <table
+            role="presentation"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            style="max-width: 560px"
+          >
+            <tr>
+              <td style="padding: 24px 32px; text-align: center">
+                <p style="margin: 0; font-size: 12px; color: #a1a1aa">
+                  How to Not Suck&trade; &middot; {{location.full_address}}
+                </p>
+                <p style="margin: 8px 0 0; font-size: 12px; color: #a1a1aa">
+                  <a
+                    href="{{unsubscribe_link}}"
+                    style="color: #a1a1aa; text-decoration: underline"
+                    >Unsubscribe</a
+                  >
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
 </html>
